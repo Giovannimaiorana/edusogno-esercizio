@@ -35,6 +35,7 @@
     background-color: rgb(210, 225, 240);
     height: calc(100vh - 100px);
     position: relative;
+    display: flex;
 }
 
 /*CSS Wave*/
@@ -97,6 +98,85 @@
     bottom: 50%;
     right: 50px;
 }
+
+
+/*css container login*/
+.containerLogin {
+    border: 1px solid black;
+    width: 600px;
+    height: 350px;
+    z-index: 50;
+    border-radius: 20px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/*css form*/
+
+.input {
+    width: 500px;
+    margin-top: 40px;
+}
+
+.input label {
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.input input {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+    width: 100%;
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+#password::placeholder {
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+}
+
+#email::placeholder {
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+}
+
+.buttonGo button {
+    width: 100%;
+    padding: 15px;
+    background-color: rgb(0, 77, 249);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.linkRegister p {
+    font-size: 13px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*MEDIAQUERY*/

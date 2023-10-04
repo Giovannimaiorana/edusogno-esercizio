@@ -19,8 +19,26 @@
     </header>
     <main>
         <div class="containerMain">
-
-
+            <div class="containerLogin">
+                <form action="">
+                    <div class="input">
+                        <label for="email">Inserisci l'email</label>
+                        <input type="mail" placeholder="name@example.com" id="email" name="email">
+                    </div>
+                    <div class="input">
+                        <label for="password">Inserisci la password</label>
+                        <input type="password" placeholder="Scrivila qui" id="password" name="password">
+                    </div>
+                    <div class="buttonGo">
+                        <button type="submit" name="login">ACCEDI</button>
+                    </div>
+                    <div class="linkRegister">
+                        <p>Non hai ancora un profilo? <a href="#">Registrati</a></p>
+                    </div>
+                </form>
+                
+      
+            </div>
 
             <div class="waveContainer">
                     <img class="singlewave first" src="./assets/img/whitewave.svg" alt="WhiteWave">
