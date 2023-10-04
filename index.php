@@ -20,7 +20,7 @@
     <main>
         <div class="containerMain">
             <div class="containerLogin">
-                <form action="">
+                <form action="./login.php" method="POST">
                     <div class="input">
                         <label for="email">Inserisci l'email</label>
                         <input type="mail" placeholder="name@example.com" id="email" name="email">
