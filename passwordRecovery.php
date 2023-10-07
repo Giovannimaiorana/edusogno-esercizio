@@ -1,10 +1,18 @@
 <?php
+
+// Includo le librerie di PHPMailer
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // Impostazioni per mostrare gli errori
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Includi il file di configurazione e il layout
+// Includo il file di configurazione e il layout
 require_once('config.php');
 include __DIR__ . '/layout.php';
 
@@ -39,36 +47,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $connection->query($updateTokenQuery);
 
         // Impostazioni di Mailtrap
-        $smtpServer = "sandbox.smtp.mailtrap.io";
-        $smtpPort = "2525";
-        $smtpAuth = true;
-        $smtpUsername = "2e4624f3c91b19";
-        $smtpPassword = "46b13a89716a1c";
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->SMTPAuth = true;
+        $mail->Username = '2e4624f3c91b19';
+        $mail->Password = '46b13a89716a1c';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 25;
+
+        // Destinatario e mittente
+        $emailTo = $email;
         $senderEmail = "example@eduSogno.it";
 
-        // Configuro le impostazioni SMTP
-        ini_set("SMTP", $smtpServer);
-        ini_set("smtp_port", $smtpPort);
-        ini_set("smtp_auth", $smtpAuth);
-        ini_set("sendmail_from", $senderEmail);
-        ini_set("username", $smtpUsername);
-        ini_set("password", $smtpPassword);
+        $mail->setFrom($senderEmail);
+        $mail->addAddress($emailTo);
 
-        // Invio l'email di recupero tramite Mailtrap
-        $emailTo = $email;
+        // Oggetto e corpo del messaggio
         $subject = "Recupero Password";
         $message = "Per reimpostare la password, inserisci il seguente token: $tokenRecupero";
-        $headers = "From: $senderEmail";
-        $headers .= "X-Mailer: PHP/" . phpversion();
+        $mail->Subject = $subject;
+        $mail->Body = $message;
 
-        // Invio dell'email
-        ini_set("mail.add_x_header", "On");
-        if (mail ($emailTo, $subject, $message, $headers)) {
-            $successMessage = "Email di recupero inviata con successo. Controlla la tua casella di posta.";
+        try {
+            $mail->send();
+            $message = "Email di recupero inviata con successo. Controlla la tua casella di posta.";
             header('Location: reset_password.php');
             exit;
-        } else {
-            $message = "Errore nell'invio dell'email di recupero: " . error_get_last()['message'];
+        } catch (Exception $e) {
+            $error = "Errore nell'invio dell'email di recupero: " . $mail->ErrorInfo;
         }
     } else {
         // Nessun account trovato con l'email specificata
