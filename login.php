@@ -1,36 +1,45 @@
 <?php
-
 require_once('config.php');
-$email = $connection->real_escape_string($_POST['email']);
-$password = $connection->real_escape_string($_POST['password']);
+session_start();
 
-if($_SERVER["REQUEST_METHOD"] === "POST") {
+$emailError = "";
+$passwordError = ""; 
+$accountError = "";
 
-    $sql_select = "SELECT * FROM utenti WHERE email = '$email'";
-
-    if($result = $connection->query($sql_select)){
-        if($result->num_rows == 1){
-            $row = $result->fetch_array(MYSQLI_ASSOC);
-
-            if($password == $row['password']){
-            session_start();
-
-            $_SESSION['logged'] = true;
-            $_SESSION['id'] = $row['id'];
-            $_SESSION['email'] = $row['email'];
-
-            header('location: personalPage.php');
-       
-            } else{
-                echo "La password non è valida";
-            }
-
-        } else{
-        echo "Non ci sono account con questa email";
-        }
-    }else{
-        echo "Errore in fase di login";
-    }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
     
-    $connection->close();
+    $sql_select = "SELECT * FROM utenti WHERE email = '$email'";
+    $result = $connection->query($sql_select);
+    
+    if ($result) {
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['logged'] = true;
+                $_SESSION['id'] = $row['id'];
+                $_SESSION['email'] = $row['email'];
+                $_SESSION['nome'] = $row['nome'];
+                $_SESSION['cognome'] = $row['cognome'];
+                
+                header('location: personalPage.php');
+            } else {
+                $passwordError = "La password non è valida";
+                $accountError = "";
+                $_SESSION['passwordError'] = $passwordError;
+                $_SESSION['accountError'] = $accountError;
+            }
+        } else {
+            $accountError = "Email o password non sono corretti o Registrati prima di effettuare l'accesso";
+            $passwordError = "";
+            $_SESSION['accountError'] = $accountError;
+            $_SESSION['passwordError'] = $passwordError;
+        }
+    } else {
+        $emailError = "Errore in fase di login";
+        $_SESSION['emailError'] = $emailError;
+    }
 }
+?>
